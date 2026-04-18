@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>AM STUDIO | Pro Dashboard — Global Comments + Profile</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background-color: #000000; color: #ffffff; font-family: 'Arial', sans-serif; overflow-x: hidden; }
+        
+        /* ----- NEW LUXURY PRELOADER ANIMATION ----- */
+        #preloader { 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            background: #000000; 
+            z-index: 9999; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            transition: opacity 0.8s ease, visibility 0.8s ease;
+        }
+        .animation-container {
+            position: relative;
+            width: 280px;
+            height: 280px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        /* Golden rotating ring */
+        .gold-ring {
+            position: absolute;
+            width: 220px;
+            height: 220px;
+            border-radius: 50%;
+            border: 2px solid rgba(212, 175, 55, 0.3);
+            border-top: 3px solid #d4af37;
+            border-right: 3px solid #f5cb42;
+            animation: rotateRing 3s linear infinite;
+            box-shadow: 0 0 15px rgba(212,175,55,0.3);
+        }
+        /* Second ring with reverse rotation */
+        .gold-ring-reverse {
+            position: absolute;
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-bottom: 2px solid #d4af37;
+            border-left: 2px solid #f5cb42;
+            animation: rotateRingReverse 4s linear infinite;
+        }
+        /* Sparkle dots */
+        .sparkle {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: #d4af37;
+            border-radius: 50%;
+            opacity: 0;
+            animation: sparkleFade 2s ease-in-out infinite;
+        }
+        .sparkle:nth-child(3) { top: 10%; left: 20%; animation-delay: 0s; }
+        .sparkle:nth-child(4) { bottom: 15%; right: 10%; animation-delay: 0.5s; }
+        .sparkle:nth-child(5) { top: 30%; right: 25%; animation-delay: 1s; }
+        .sparkle:nth-child(6) { bottom: 25%; left: 15%; animation-delay: 1.5s; }
+        .sparkle:nth-child(7) { top: 50%; left: 5%; animation-delay: 0.3s; }
+        .sparkle:nth-child(8) { bottom: 40%; right: 8%; animation-delay: 0.8s; }
+
+        @keyframes rotateRing {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        @keyframes rotateRingReverse {
+            0% { transform: rotate(360deg); }
+            100% { transform: rotate(0deg); }
+        }
+        @keyframes sparkleFade {
+            0% { opacity: 0; transform: scale(0.5); }
+            50% { opacity: 1; transform: scale(1.2); box-shadow: 0 0 8px #d4af37; }
+            100% { opacity: 0; transform: scale(0.5); }
+        }
+
+        .central-logo { 
+            width: 110px; 
+            height: auto; 
+            border-radius: 50%; 
+            background: #000; 
+            padding: 5px;
+            animation: logoGlow 2s ease-in-out infinite;
+            filter: drop-shadow(0 0 8px rgba(212,175,55,0.6));
+        }
+        @keyframes logoGlow {
+            0% { filter: drop-shadow(0 0 2px rgba(212,175,55,0.4)); transform: scale(0.98); }
+            50% { filter: drop-shadow(0 0 18px rgba(212,175,55,0.9)); transform: scale(1.02); }
+            100% { filter: drop-shadow(0 0 2px rgba(212,175,55,0.4)); transform: scale(0.98); }
+        }
+        
+        /* Main content styles (same as before, but removed unused sections) */
+        #mainContent { display: none; opacity: 0; transition: opacity 0.6s ease; }
+        .navbar { background: #111; padding: 15px; border-bottom: 1px solid #333; position: sticky; top: 0; z-index: 100; text-align: center; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+        .navbar a { color: #d4af37; text-decoration: none; margin: 0 15px; font-size: 14px; font-weight: bold; text-transform: uppercase; display: inline-block; transition: 0.2s; cursor: pointer; }
+        .navbar a:hover { color: #f5cb42; text-shadow: 0 0 2px rgba(212,175,55,0.5); }
+        .navbar .nav-active { border-bottom: 2px solid #d4af37; padding-bottom: 4px; color: #f5cb42; }
+        .header { border-bottom: 2px solid #d4af37; padding: 30px 20px; margin-bottom: 30px; text-align: center; }
+        .logo { width: 150px; height: auto; margin-bottom: 10px; display: inline-block; }
+        #discount-bar { background: #d4af37; color: #000; padding: 10px; font-weight: bold; font-size: 14px; text-align: center; }
+        
+        /* Products grid - untouched */
+        .products-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 30px 20px; max-width: 1300px; margin: 0 auto; padding: 20px 25px; }
+        .product-card { border: 2px solid #d4af37; background: #0a0a0a; border-radius: 12px; padding: 20px 15px; transition: transform 0.2s, box-shadow 0.2s; display: flex; flex-direction: column; align-items: center; text-align: center; height: 100%; }
+        .product-card:hover { transform: translateY(-5px); box-shadow: 0 12px 20px rgba(212, 175, 55, 0.2); border-color: #e5c559; }
+        .img { width: 100%; max-width: 280px; height: auto; border-radius: 8px; border: 1px solid #444; object-fit: cover; margin: 12px 0; cursor: pointer; transition: 0.2s; }
+        .img:hover { opacity: 0.9; transform: scale(1.01); }
+        .btn { background: #d4af37; color: #000; padding: 12px 25px; text-decoration: none; font-weight: bold; display: inline-block; margin-top: 15px; border-radius: 40px; border: none; cursor: pointer; transition: 0.2s; }
+        .btn:hover { background: #f5cb42; transform: scale(0.98); }
+        
+        .footer-section { background: #111; padding: 40px 20px; border-top: 1px solid #333; text-align: center; margin-top: 40px; }
+        @media (max-width: 700px) { .products-grid { grid-template-columns: 1fr; } .no-products { grid-column: span 1; } }
+        .no-products { text-align: center; padding: 50px; font-size: 18px; color: #aaa; grid-column: span 2; }
+        
+        /* Modals - unchanged */
+        .email-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.92); backdrop-filter: blur(8px); z-index: 30000; align-items: center; justify-content: center; }
+        .email-modal-content { background: #0c0c0c; border: 2px solid #d4af37; border-radius: 28px; padding: 35px 28px; width: 90%; max-width: 420px; text-align: center; animation: fadeSlideUp 0.4s ease-out; }
+        @keyframes fadeSlideUp { from { opacity: 0; transform: translateY(25px); } to { opacity: 1; transform: translateY(0); } }
+        .email-modal h3 { font-size: 26px; color: #d4af37; margin-bottom: 12px; }
+        .email-modal input { width: 100%; padding: 14px 18px; background: #1e1e1e; border: 1px solid #d4af37; border-radius: 50px; color: white; margin-bottom: 25px; text-align: center; }
+        .modal-buttons { display: flex; flex-direction: column; gap: 14px; }
+        .modal-btn { padding: 12px 0; font-weight: bold; border-radius: 50px; cursor: pointer; border: none; }
+        .btn-login { background: #d4af37; color: #000; }
+        .btn-guest { background: transparent; color: #d4af37; border: 1px solid #d4af37; }
+        .profile-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); backdrop-filter: blur(5px); z-index: 45000; align-items: center; justify-content: center; overflow-y: auto; padding: 30px 20px; }
+        .profile-modal-content { background: #0a0a0a; border: 2px solid #d4af37; border-radius: 28px; max-width: 500px; width: 100%; padding: 30px; position: relative; animation: fadeSlideUp 0.3s ease; text-align: center; }
+        .profile-avatar { width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 3px solid #d4af37; margin-bottom: 20px; background: #222; }
+        .profile-field { margin: 20px 0; text-align: left; }
+        .profile-field label { display: block; color: #d4af37; margin-bottom: 8px; font-size: 14px; font-weight: bold; }
+        .profile-field input, .profile-field .email-display { width: 100%; padding: 12px; background: #1e1e1e; border: 1px solid #d4af37; border-radius: 40px; color: white; font-size: 14px; outline: none; }
+        .profile-actions { display: flex; gap: 15px; justify-content: center; margin-top: 20px; }
+        .profile-btn { background: #d4af37; color: #000; border: none; padding: 10px 25px; border-radius: 40px; font-weight: bold; cursor: pointer; transition: 0.2s; }
+        .profile-btn:hover { background: #f5cb42; transform: scale(0.98); }
+        .profile-btn-secondary { background: transparent; border: 1px solid #d4af37; color: #d4af37; }
+        .file-input-label { background: #333; display: inline-block; padding: 8px 16px; border-radius: 40px; cursor: pointer; margin-top: 10px; font-size: 12px; }
+        #profilePicInput { display: none; }
+        .profile-note { font-size: 12px; color: #aaa; margin-top: 15px; }
+    </style>
+</head>
+<body>
+<!-- NEW LUXURY PRELOADER -->
+<div id="preloader">
+    <div class="animation-container">
+        <div class="gold-ring"></div>
+        <div class="gold-ring-reverse"></div>
+        <div class="sparkle"></div>
+        <div class="sparkle"></div>
+        <div class="sparkle"></div>
+        <div class="sparkle"></div>
+        <div class="sparkle"></div>
+        <div class="sparkle"></div>
+        <img src="https://i.postimg.cc/hGvvPXwS/ei-1771101710052-removebg-preview.png" alt="AM STUDIO LOGO" class="central-logo" id="centralLogoAnim">
+    </div>
+</div>
+
+<div id="mainContent">
+    <div id="discount-bar">PREMIUM LIFESTYLE PRODUCTS — AM STUDIO | GLOBAL COMMENTS ENABLED</div>
+    <div class="navbar">
+        <a id="navProductsBtn" class="nav-active">PRODUCTS</a>
+        <a href="https://wa.me/923172722004">CONTACT</a>
+        <a id="navMeBtn">👤 ME</a>
+    </div>
+    <div class="header">
+        <img src="https://i.postimg.cc/hGvvPXwS/ei-1771101710052-removebg-preview.png" alt="Logo" class="logo">
+        <p style="color:#d4af37; letter-spacing: 2px; margin-top: 10px; font-size: 14px;">QUALITY MEETS LIFESTYLE</p>
+    </div>
+    <!-- Category blocks, search bar, and badge completely removed -->
+    <div id="products"><div id="dynamic-products" class="products-grid">Loading products...</div></div>
+    <div class="footer-section"><h3>ABOUT AM STUDIO</h3><p style="color: #aaa; font-size: 14px;">© 2026 AM STUDIO | KARACHI, PAKISTAN</p></div>
+</div>
+
+<!-- Email Modal (unchanged) -->
+<div id="emailModal" class="email-modal"><div class="email-modal-content"><h3>✦ AM STUDIO ✦</h3><p>Enter your email to unlock exclusive updates</p><input type="email" id="visitorEmail" placeholder="Your email address"><div id="emailError" class="error-msg"></div><div class="modal-buttons"><button class="modal-btn btn-login" id="modalLoginBtn">LOGIN</button><button class="modal-btn btn-guest" id="modalGuestBtn">CONTINUE SHOPPING</button></div></div></div>
+
+<!-- Profile Modal (unchanged) -->
+<div id="profileModal" class="profile-modal"><div class="profile-modal-content"><span class="close-modal" id="closeProfileBtn">&times;</span><h3 style="color:#d4af37; margin-bottom:20px;">👤 MY PROFILE</h3><img id="profileAvatar" class="profile-avatar" src="https://i.postimg.cc/hGvvPXwS/ei-1771101710052-removebg-preview.png" alt="Avatar"><div class="profile-field"><label>📸 Profile Picture</label><label class="file-input-label">Choose Image<input type="file" id="profilePicInput" accept="image/*"></label></div><div class="profile-field"><label>🏷️ Nickname</label><input type="text" id="profileNickname" placeholder="Your nickname"></div><div class="profile-field"><label>📧 Email Address</label><input type="email" id="profileEmail" placeholder="Your email"></div><div class="profile-actions"><button id="saveProfileBtn" class="profile-btn">SAVE CHANGES</button><button id="cancelProfileBtn" class="profile-btn profile-btn-secondary">CANCEL</button></div><div class="profile-note">💡 Changes are saved in your browser (localStorage).</div></div></div>
+
+<script>
+    // ============================================================
+    // ✅ YOUR GOOGLE APPS SCRIPT URL (unchanged)
+    // ============================================================
+    const MAIN_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyORLE0_edF1xr8PAk8aWLhtAcwooWz5RHO0EGftnafWBwjST6p08BZKP4WqiA-W4b7/exec';
+    
+    let mainProductsData = [];
+    // No search term needed anymore
+    const preloader = document.getElementById('preloader');
+    const mainContent = document.getElementById('mainContent');
+    const dynamicContainer = document.getElementById('dynamic-products');
+    const navProducts = document.getElementById('navProductsBtn');
+    const navMe = document.getElementById('navMeBtn');
+    const profileModal = document.getElementById('profileModal');
+    const profileAvatar = document.getElementById('profileAvatar');
+    const profileNickname = document.getElementById('profileNickname');
+    const profileEmail = document.getElementById('profileEmail');
+    const profilePicInput = document.getElementById('profilePicInput');
+    const saveProfileBtn = document.getElementById('saveProfileBtn');
+    const cancelProfileBtn = document.getElementById('cancelProfileBtn');
+    const closeProfileBtn = document.getElementById('closeProfileBtn');
+    
+    // New simple preloader: just wait 2 seconds then fade out
+    function startLuxuryAnimation() {
+        // CSS animation already running, just set timeout to hide preloader
+        setTimeout(() => {
+            preloader.style.opacity = "0";
+            setTimeout(() => {
+                preloader.style.display = "none";
+                mainContent.style.display = "block";
+                setTimeout(() => {
+                    mainContent.style.opacity = "1";
+                    showEmailModalIfNewUser();
+                }, 50);
+            }, 800);
+        }, 2000);
+    }
+    
+    // Email modal functions (unchanged)
+    const emailModal = document.getElementById('emailModal');
+    function isEmailDecisionMade() { return localStorage.getItem('am_email_decision') === 'true'; }
+    function showEmailModalIfNewUser() { if (!isEmailDecisionMade() && emailModal) { document.body.style.overflow = 'hidden'; emailModal.style.display = 'flex'; } }
+    function hideEmailModal() { emailModal.style.display = 'none'; document.body.style.overflow = ''; }
+    function validateEmail(email) { return /^[^\s@]+@([^\s@]+\.)+[^\s@]+$/.test(email); }
+    function handleEmailDecision(action) { const email = visitorEmailInput.value.trim(); if (!email || !validateEmail(email)) { emailErrorSpan.innerText = "⚠️ Valid email required."; return false; } localStorage.setItem('am_user_email', email); localStorage.setItem('am_email_decision', 'true'); hideEmailModal(); return true; }
+    document.getElementById('modalLoginBtn')?.addEventListener('click', () => handleEmailDecision('login'));
+    document.getElementById('modalGuestBtn')?.addEventListener('click', () => handleEmailDecision('guest'));
+    const visitorEmailInput = document.getElementById('visitorEmail'), emailErrorSpan = document.getElementById('emailError');
+    
+    // Product functions (no search)
+    function generateProductId(source, productName, price) { const slug = productName.toLowerCase().replace(/[^a-z0-9]+/g, '-').slice(0, 50); return `${source}_${slug}_${price}`; }
+    function enrichProduct(product, sourceType) { 
+        let additionalImages = []; 
+        if (product.AdditionalImages && typeof product.AdditionalImages === 'string') additionalImages = product.AdditionalImages.split(',').map(url => url.trim()).filter(u => u.startsWith('http')); 
+        if (additionalImages.length === 0 && product.ImageURL) additionalImages = [product.ImageURL]; 
+        const detailedDescription = product.DetailedDescription || product.Description || "Premium quality lifestyle product from AM STUDIO."; 
+        return { ...product, source: sourceType, productId: generateProductId(sourceType, product.ProductName, product.Price), additionalImages, detailedDesc: detailedDescription }; 
+    }
+    async function fetchJSON(url, name) { 
+        try { 
+            const res = await fetch(url); 
+            if (!res.ok) throw new Error(); 
+            const data = await res.json(); 
+            console.log(`✅ ${name}: ${data.length}`); 
+            return data; 
+        } catch(e) { 
+            console.error(`❌ ${name} failed`, e); 
+            return []; 
+        } 
+    }
+    async function loadAllData() { 
+        dynamicContainer.innerHTML = '<div class="no-products">⏳ Syncing...</div>'; 
+        const mainRaw = await fetchJSON(MAIN_SCRIPT_URL, "Main Products");
+        mainProductsData = (Array.isArray(mainRaw) ? mainRaw : []).map(p => enrichProduct(p, 'main')); 
+        refreshProductDisplay(); 
+    }
+    
+    function refreshProductDisplay() { 
+        // Show all Public products (no search filter)
+        let filtered = mainProductsData.filter(item => item.Status === 'Public'); 
+        if (filtered.length === 0) { 
+            dynamicContainer.innerHTML = `<div class="no-products">✨ No products found.</div>`; 
+            return; 
+        } 
+        let html = ''; 
+        filtered.forEach(item => { 
+            html += `<div class="product-card">
+                        <h2 style="color:#d4af37;font-size:1.4rem;">${escapeHtml(item.ProductName)}</h2>
+                        <img src="${item.ImageURL}" class="img" data-product-id='${item.productId}' onerror="this.src='https://i.postimg.cc/RWtzJxKz/IMG-20260116-WA0014.jpg'">
+                        <p style="font-weight:bold;font-size:1.2rem;">${item.Price}</p>
+                        <a href="${item.ProductLink || '#'}" target="_blank" class="btn">🔍 VISIT MORE</a>
+                    </div>`; 
+        }); 
+        dynamicContainer.innerHTML = html; 
+    }
+    
+    function escapeHtml(str) { if (!str) return ''; return str.replace(/[&<>]/g, m => { if(m==='&') return '&amp;'; if(m==='<') return '&lt;'; if(m==='>') return '&gt;'; return m;}); }
+    
+    // Profile functions (unchanged)
+    function loadProfile() { profileNickname.value = localStorage.getItem('am_nickname') || ''; profileEmail.value = localStorage.getItem('am_user_email') || ''; profileAvatar.src = localStorage.getItem('am_avatar') || 'https://i.postimg.cc/hGvvPXwS/ei-1771101710052-removebg-preview.png'; }
+    function saveProfile() { const nickname = profileNickname.value.trim(); const email = profileEmail.value.trim(); if (email && !validateEmail(email)) { alert("Please enter a valid email address."); return; } if (nickname) localStorage.setItem('am_nickname', nickname); else localStorage.removeItem('am_nickname'); if (email) { localStorage.setItem('am_user_email', email); localStorage.setItem('am_email_decision', 'true'); } else { localStorage.removeItem('am_user_email'); } alert("Profile saved!"); location.reload(); }
+    function handleProfilePicUpload(e) { const file = e.target.files[0]; if (file) { const reader = new FileReader(); reader.onload = function(ev) { localStorage.setItem('am_avatar', ev.target.result); profileAvatar.src = ev.target.result; alert("Profile picture updated. Click SAVE."); }; reader.readAsDataURL(file); } }
+    function openProfileModal() { loadProfile(); profileModal.style.display = 'flex'; document.body.style.overflow = 'hidden'; }
+    function closeProfileModal() { profileModal.style.display = 'none'; document.body.style.overflow = ''; }
+    profilePicInput.addEventListener('change', handleProfilePicUpload); 
+    saveProfileBtn.addEventListener('click', saveProfile); 
+    cancelProfileBtn.addEventListener('click', closeProfileModal); 
+    closeProfileBtn.addEventListener('click', closeProfileModal); 
+    window.addEventListener('click', (e) => { if (e.target === profileModal) closeProfileModal(); }); 
+    navMe.addEventListener('click', (e) => { e.preventDefault(); openProfileModal(); });
+    
+    // Refresh on products button click
+    navProducts.addEventListener('click', () => { refreshProductDisplay(); });
+    
+    // Start everything
+    window.addEventListener('load', () => { 
+        startLuxuryAnimation(); 
+        loadAllData(); 
+    });
+</script>
+</body>
+</html>
