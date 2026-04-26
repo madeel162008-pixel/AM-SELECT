@@ -107,8 +107,17 @@
         .navbar a:hover { color: #f5cb42; text-shadow: 0 0 2px rgba(212,175,55,0.5); }
         .navbar .nav-active { border-bottom: 2px solid #d4af37; padding-bottom: 4px; color: #f5cb42; }
         .header { border-bottom: 2px solid #d4af37; padding: 30px 20px; margin-bottom: 30px; text-align: center; }
-        .logo { width: 150px; height: auto; margin-bottom: 10px; display: inline-block; }
-        #discount-bar { background: #d4af37; color: #000; padding: 10px; font-weight: bold; font-size: 14px; text-align: center; }
+        .logo { 
+            width: 100%; 
+            max-width: 450px; 
+            height: auto; 
+            margin-bottom: 10px; 
+            display: inline-block; 
+            border-radius: 12px; 
+        }
+        #discount-bar { background: #d4af37; color: #000; padding: 10px; font-weight: bold; font-size: 14px; text-align: center; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
+        .quiz-link-btn { background: #000; color: #d4af37; border: 1px solid #000; padding: 6px 18px; border-radius: 40px; font-weight: bold; font-size: 13px; text-decoration: none; transition: 0.2s; display: inline-block; white-space: nowrap; }
+        .quiz-link-btn:hover { background: #1a1a1a; color: #f5cb42; transform: scale(0.97); }
         
         /* Products grid - untouched */
         .products-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 30px 20px; max-width: 1300px; margin: 0 auto; padding: 20px 25px; }
@@ -165,14 +174,22 @@
 </div>
 
 <div id="mainContent">
-    <div id="discount-bar">PREMIUM LIFESTYLE PRODUCTS — AM STUDIO | GLOBAL COMMENTS ENABLED</div>
+    <!-- Discount bar with added button - removed "GLOBAL COMMENTS ENABLED" -->
+    <div id="discount-bar">
+        <span>PREMIUM LIFESTYLE PRODUCTS — AM STUDIO</span>
+        <a href="https://madeel162008-pixel.github.io/APPLY-FOR-QUIZ/" target="_blank" class="quiz-link-btn">✨ APPLY FOR DISCOUNT QUIZ ✨</a>
+    </div>
     <div class="navbar">
         <a id="navProductsBtn" class="nav-active">PRODUCTS</a>
         <a href="https://wa.me/923172722004">CONTACT</a>
         <a id="navMeBtn">👤 ME</a>
     </div>
     <div class="header">
-        <img src="https://i.postimg.cc/hGvvPXwS/ei-1771101710052-removebg-preview.png" alt="Logo" class="logo">
+        <!-- Logo Replaced with New Banner Image with Fallback -->
+        <img src="https://i.postimg.cc/G2kwHZdr/Untitled-design-20260426-223514-0000.png" 
+             alt="AM STUDIO Banner" 
+             class="logo"
+             onerror="this.onerror=null; this.src='https://i.postimg.cc/hGvvPXwS/ei-1771101710052-removebg-preview.png';">
         <p style="color:#d4af37; letter-spacing: 2px; margin-top: 10px; font-size: 14px;">QUALITY MEETS LIFESTYLE</p>
     </div>
     <!-- Category blocks, search bar, and badge completely removed -->
